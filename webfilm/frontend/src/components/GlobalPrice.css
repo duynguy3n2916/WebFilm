@@ -1,0 +1,13 @@
+/* ===== Global Price Styles ===== */
+/* Tất cả giá tiền - màu đen */
+.price, 
+[class*="price"],
+[class*="total"],
+.ticket-price,
+.combo-price,
+.seats-price,
+.total-line,
+.bold {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
