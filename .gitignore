@@ -1,0 +1,17 @@
+# Node
+node_modules/
+webfilm/frontend/node_modules/
+webfilm/node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Builds
+webfilm/frontend/build/
+dist/
+.out/
+.next/
+coverage/
+
+# Env
+.env
+.env.*
