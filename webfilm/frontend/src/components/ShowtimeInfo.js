@@ -1,12 +1,18 @@
 import React from 'react';
 import './ShowtimeInfo.css';
-import { money } from './sharedData';
+
+// Utility function for money formatting (thousand separators, no trailing ,00)
+const money = (v) => {
+  const n = Number(v || 0);
+  return n.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + 'đ';
+};
 
 export default function ShowtimeInfo({ 
   movie, 
   day, 
   time, 
   room, 
+  seatPrice = 85000,
   selectedSeats = [], 
   combos = [], 
   total = 0,
@@ -19,8 +25,8 @@ export default function ShowtimeInfo({
   onRemoveCombo,
   disabled = false 
 }) {
-  const seatsTotal = selectedSeats.length * 85000;
-  const combosTotal = combos.reduce((sum, combo) => sum + combo.price, 0);
+  const seatsTotal = selectedSeats.length * Number(seatPrice || 85000);
+  const combosTotal = combos.reduce((sum, combo) => sum + (Number(combo.price)||0), 0);
   const finalTotal = seatsTotal + combosTotal;
 
   // Group combos by name to show quantity
@@ -69,7 +75,7 @@ export default function ShowtimeInfo({
 
       <div className="movie-details">
         <div className="movie-poster">
-          <img src={movie.poster} alt={movie.title} />
+          <img src={movie.poster_url || movie.poster || "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop"} alt={movie.title} />
         </div>
         <div className="movie-info">
           <h4 className="movie-title">{movie.title}</h4>
@@ -127,7 +133,7 @@ export default function ShowtimeInfo({
             ))}
           </div>
           <div className="seats-price">
-            {selectedSeats.length} ghế × {money(85000)} = {money(seatsTotal)}
+            {selectedSeats.length} ghế × {money(seatPrice)} = {money(seatsTotal)}
           </div>
         </div>
       )}
@@ -229,14 +235,22 @@ export default function ShowtimeInfo({
           >
             Tiếp tục →
           </button>
-        ) : step < 3 ? (
-          <button 
-            className="btn btn-primary"
-            onClick={onNextStep}
-            disabled={disabled || selectedSeats.length === 0}
-          >
-            Tiếp tục →
-          </button>
+        ) : step === 2 ? (
+          <>
+            <button 
+              className="btn btn-outline"
+              onClick={onPrevStep}
+            >
+              ← Quay lại
+            </button>
+            <button 
+              className="btn btn-primary"
+              onClick={onNextStep}
+              disabled={disabled || selectedSeats.length === 0}
+            >
+              Tiếp tục →
+            </button>
+          </>
         ) : (
           <>
             <button 

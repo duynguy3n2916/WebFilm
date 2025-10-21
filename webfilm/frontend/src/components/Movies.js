@@ -1,25 +1,35 @@
 import './Movies.css'; 
 import React, { useMemo, useState } from 'react'; 
-import { MOVIES } from './sharedData'; 
 import MovieSlider from './MovieSlider';
-export default function Movies({ onOpenMovie, onBookMovie }){
+
+export default function Movies({ movies, loading, onOpenMovie, onBookMovie }){
+  const noFocusStyle = { outline: 'none', boxShadow: 'none' };
+  const preventFocus = (e) => { e.preventDefault(); };
   const allGenres = useMemo(()=>{ 
+    if (!movies || movies.length === 0) return ['Tất cả'];
     const set=new Set(); 
-    MOVIES.forEach(m=>m.tags.forEach(t=>set.add(t))); 
+    movies.forEach(m=>{
+      const tags = Array.isArray(m.tags) ? m.tags : JSON.parse(m.tags || '[]');
+      tags.forEach(t=>set.add(t));
+    }); 
     return ['Tất cả',...Array.from(set)]; 
-  },[]);
+  },[movies]);
   
   const [genre,setGenre]=useState('Tất cả'); 
   const [status,setStatus]=useState('Tất cả'); 
   const [q,setQ]=useState('');
   
-  const filtered = useMemo(()=> MOVIES.filter(m=>{ 
-    const okG=genre==='Tất cả'||m.tags.includes(genre); 
-    const okS=status==='Tất cả'||(status==='Đang chiếu'?m.status==='now':m.status==='soon'); 
-    const text=(m.title+' '+m.tags.join(' ')).toLowerCase(); 
-    const okQ= q.trim()==='' || text.includes(q.trim().toLowerCase()); 
-    return okG && okS && okQ; 
-  }),[genre,status,q]);
+  const filtered = useMemo(()=> {
+    if (!movies || movies.length === 0) return [];
+    return movies.filter(m=>{ 
+      const tags = Array.isArray(m.tags) ? m.tags : JSON.parse(m.tags || '[]');
+      const okG=genre==='Tất cả'||tags.includes(genre); 
+      const okS=status==='Tất cả'||(status==='Đang chiếu'?m.status==='now':m.status==='soon'); 
+      const text=(m.title+' '+tags.join(' ')).toLowerCase(); 
+      const okQ= q.trim()==='' || text.includes(q.trim().toLowerCase()); 
+      return okG && okS && okQ; 
+    });
+  },[movies, genre,status,q]);
 
   const getResultTitle = () => {
     if (filtered.length === 0) return "Không tìm thấy phim nào";
@@ -45,6 +55,17 @@ export default function Movies({ onOpenMovie, onBookMovie }){
   };
 
   const hasActiveFilters = genre !== 'Tất cả' || status !== 'Tất cả' || q.trim() !== '';
+
+  if (loading) {
+    return (
+      <div className="movies">
+        <div className="movies-header">
+          <h1 className="movies-title">🎬 Khám phá phim</h1>
+          <p className="movies-subtitle">Đang tải dữ liệu...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="movies">
@@ -75,11 +96,13 @@ export default function Movies({ onOpenMovie, onBookMovie }){
           <div className="filter-group">
             <label className="filter-label">Trạng thái:</label>
             <div className="filter-buttons">
-              {['Tất cả','Đang chiếu','Sắp chiếu'].map(s=>(
+              {['Tất cả','Đang chiếu','Sắp chiếu'].map(s=> (
                 <button 
                   key={s} 
                   className={`filter-btn ${status===s?'active':''}`}
                   onClick={()=>setStatus(s)}
+                  style={noFocusStyle}
+                  onMouseDown={preventFocus}
                 >
                   {s === 'Đang chiếu' ? '🎬' : s === 'Sắp chiếu' ? '⏰' : '📋'} {s}
                 </button>
@@ -90,11 +113,13 @@ export default function Movies({ onOpenMovie, onBookMovie }){
           <div className="filter-group">
             <label className="filter-label">Thể loại:</label>
             <div className="filter-buttons genres-filter">
-              {allGenres.map(g=>(
+              {allGenres.map(g=> (
                 <button 
                   key={g} 
                   className={`filter-btn ${genre===g?'active':''}`}
                   onClick={()=>setGenre(g)}
+                  style={noFocusStyle}
+                  onMouseDown={preventFocus}
                 >
                   {g}
                 </button>
@@ -105,7 +130,7 @@ export default function Movies({ onOpenMovie, onBookMovie }){
 
         {hasActiveFilters && (
           <div className="filter-actions">
-            <button className="clear-filters-btn" onClick={clearFilters}>
+            <button className="clear-filters-btn" onClick={clearFilters} style={noFocusStyle} onMouseDown={preventFocus}>
               🗑️ Xóa bộ lọc
             </button>
           </div>
@@ -123,7 +148,8 @@ export default function Movies({ onOpenMovie, onBookMovie }){
             onOpen={onOpenMovie}
             onBook={onBookMovie}
             title=""
-            showViewMore={false}
+            showViewMore={true}
+            loading={false}
           />
         ) : (
           <div className="no-results">

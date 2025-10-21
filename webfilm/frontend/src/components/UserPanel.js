@@ -1,8 +1,13 @@
 import './UserPanel.css'; 
 import React, { useState } from 'react'; 
 import { H2, Button } from './UI'; 
-import { MOVIES, money } from './sharedData';
 import UserEditModal from './UserEditModal';
+
+// Utility function for money formatting (thousand separators, no trailing ,00)
+const money = (v) => {
+  const n = Number(v || 0);
+  return n.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + 'đ';
+};
 export default function UserPanel({ user, tickets, onUserUpdate }){
   const [open,setOpen]=useState(new Set()); 
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -17,7 +22,7 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
 
   const getMembershipLevel = () => {
     if (!user) return '—';
-    const points = user.points || 320;
+    const points = user.points || 0;
     if (points >= 1000) return '🏆 Hạng Diamond';
     if (points >= 500) return '🥇 Hạng Gold';
     if (points >= 200) return '🥈 Hạng Silver';
@@ -85,7 +90,7 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
               <div className="info-icon">⭐</div>
               <div className="info-content">
                 <div className="info-label">Điểm tích lũy</div>
-                <div className="info-value">{user ? (user.points || 320) : 0}</div>
+                <div className="info-value">{user ? (user.points || 0) : 0}</div>
               </div>
             </div>
             
@@ -93,7 +98,7 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
               <div className="info-icon">🎫</div>
               <div className="info-content">
                 <div className="info-label">Vé đã mua</div>
-                <div className="info-value">{tickets.length} vé</div>
+                <div className="info-value">{tickets.reduce((total, ticket) => total + (Array.isArray(ticket.seats) ? ticket.seats.length : 0), 0)} vé</div>
               </div>
             </div>
           </div>
@@ -110,11 +115,16 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
               <p>Hãy đặt vé để xem phim yêu thích của bạn!</p>
             </div>
           ) : (
-            tickets.map((t, idx) => (
+            tickets.map((t, idx) => {
+              const comboTotalCalc = (Array.isArray(t.combos) ? t.combos : []).reduce((s,c)=> s + Number(c?.price||0)*Number(c?.quantity||1), 0);
+              const comboTotal = (typeof t.comboTotal === 'number') ? t.comboTotal : comboTotalCalc;
+              const seatTotal = (typeof t.seatTotal === 'number') ? t.seatTotal : Math.max(0, Number(t.total||0) - Number(comboTotal));
+              const headerTotal = (typeof t.total === 'number') ? t.total : (seatTotal + comboTotal);
+              return (
               <div key={idx} className="ticket-card">
                 <div className="ticket-header">
                   <div className="ticket-poster">
-                    <img src={MOVIES.find(m=>m.id===t.movieId)?.poster} alt={t.title} />
+                    <img src={t.poster || "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop"} alt={t.title} />
                   </div>
                   <div className="ticket-info">
                     <h3 className="ticket-title">{t.title}</h3>
@@ -129,12 +139,12 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
                         🏢 Phòng {t.room}
                       </span>
                       <span className="ticket-seats">
-                        💺 Ghế: {t.seats.join(', ')}
+                        💺 Ghế: {Array.isArray(t.seats) ? t.seats.join(', ') : (typeof t.seats === 'string' ? t.seats : '—')}
                       </span>
                     </div>
                   </div>
                   <div className="ticket-actions">
-                    <div className="ticket-price">{money(t.total || 0)}</div>
+                    <div className="ticket-price">{money(headerTotal)}</div>
                     <Button 
                       variant="outline" 
                       onClick={()=>toggle(idx)}
@@ -163,7 +173,7 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
                       </div>
                       <div className="detail-row">
                         <span className="detail-label">Ghế:</span>
-                        <span className="detail-value">{t.seats.join(', ')}</span>
+                        <span className="detail-value">{Array.isArray(t.seats) ? t.seats.join(', ') : (typeof t.seats === 'string' ? t.seats : '—')}</span>
                       </div>
                       
                       <div className="combos-section">
@@ -172,8 +182,8 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
                           <ul className="combos-list">
                             {t.combos.map((c,i)=>
                               <li key={i} className="combo-item">
-                                <span>{c.name}</span>
-                                <span className="combo-price">{money(c.price)}</span>
+                                <span>{c.name}{Number(c?.quantity||1) > 1 ? ` × ${Number(c.quantity)}` : ''}</span>
+                                <span className="combo-price">{money(Number(c?.price||0) * Number(c?.quantity||1))}</span>
                               </li>
                             )}
                           </ul>
@@ -182,15 +192,32 @@ export default function UserPanel({ user, tickets, onUserUpdate }){
                         )}
                       </div>
                       
+                      <div className="detail-row">
+                        <span className="detail-label">Giá vé:</span>
+                        <span className="detail-value" style={{display:'flex', justifyContent:'space-between', width:'100%'}}>
+                          <span>{Array.isArray(t.seats) ? `${t.seats.length} ghế` : ''}</span>
+                          <span className="combo-price">{money(seatTotal)}</span>
+                        </span>
+                      </div>
+                      {comboTotal > 0 && (
+                        <div className="detail-row">
+                          <span className="detail-label">Giá combo:</span>
+                          <span className="detail-value" style={{display:'flex', justifyContent:'space-between', width:'100%'}}>
+                            <span></span>
+                            <span className="combo-price">{money(comboTotal)}</span>
+                          </span>
+                        </div>
+                      )}
+                      
                       <div className="total-section">
                         <span className="total-label">Tổng đã trả:</span>
-                        <span className="total-value">{money(t.total || 0)}</span>
+                        <span className="total-value">{money(headerTotal)}</span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
-            ))
+            )})
           )}
         </div>
       </div>

@@ -10,9 +10,8 @@ export default function Footer() {
             <div className="footer-column">
               <h3 className="footer-heading">VỀ CINEMAX</h3>
               <ul className="footer-list">
-                <li><a href="#">Hệ thống rạp</a></li>
-                <li><a href="#">Cụm rạp</a></li>
                 <li><a href="#">Liên hệ</a></li>
+                <li><a href="#">Về chúng tôi</a></li>
               </ul>
             </div>
 

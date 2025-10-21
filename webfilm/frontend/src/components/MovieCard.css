@@ -17,7 +17,7 @@
 
 .imgwrap {
   position: relative;
-  height: 360px;
+  height: 360px; /* cố định size ảnh trong thẻ phim */
   overflow: hidden;
 }
 
@@ -25,12 +25,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: none; /* bỏ hiệu ứng hover */
 }
 
-.mc:hover .imgwrap img {
-  transform: scale(1.05);
-}
+.mc:hover .imgwrap img { transform: none; }
 
 /* Overlay gradient khi hover */
 .imgwrap::after {
@@ -41,14 +39,12 @@
   right: 0;
   height: 60%;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  opacity: 0; /* ẩn overlay khi không hover */
+  transition: none; /* bỏ hiệu ứng */
   pointer-events: none;
 }
 
-.mc:hover .imgwrap::after {
-  opacity: 1;
-}
+.mc:hover .imgwrap::after { opacity: 0; }
 
 /* Chuyển các nút xuống khu vực actions ở dưới thẻ */
 .actions {

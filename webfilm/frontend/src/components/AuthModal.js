@@ -3,8 +3,8 @@ export default function AuthModal({ open, onClose, mode, setMode, onLogin, onSig
   const [name, setName] = useState(""); const [email, setEmail] = useState(""); const [password, setPassword] = useState("");
   if (!open) return null;
   const submit = () => {
-    if (mode === "signup") { if (!name || !email || !password) return alert("Vui lòng điền đầy đủ."); onSignup({ name, email }); }
-    else { if (!email || !password) return alert("Nhập email và mật khẩu."); onLogin({ email }); }
+    if (mode === "signup") { if (!name || !email || !password) return alert("Vui lòng điền đầy đủ."); onSignup({ name, email, password }); }
+    else { if (!email || !password) return alert("Nhập email và mật khẩu."); onLogin({ email, password }); }
     setName(""); setEmail(""); setPassword("");
   };
   return (

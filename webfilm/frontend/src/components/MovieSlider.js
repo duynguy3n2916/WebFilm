@@ -3,7 +3,7 @@ import './MovieSlider.css';
 import MovieCard from './MovieCard';
 import { Button } from './UI';
 
-export default function MovieSlider({ movies, onOpen, onBook, title, showViewMore = true }) {
+export default function MovieSlider({ movies, onOpen, onBook, title, showViewMore = true, loading = false }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const sliderRef = useRef(null);
@@ -22,6 +22,36 @@ export default function MovieSlider({ movies, onOpen, onBook, title, showViewMor
   const handleViewMore = () => {
     setIsExpanded(v => !v);
   };
+
+  if (loading) {
+    return (
+      <div className="movie-slider">
+        {title && (
+          <div className="slider-header">
+            <h2 className="slider-title">{title}</h2>
+          </div>
+        )}
+        <div style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Đang tải...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!movies || movies.length === 0) {
+    return (
+      <div className="movie-slider">
+        {title && (
+          <div className="slider-header">
+            <h2 className="slider-title">{title}</h2>
+          </div>
+        )}
+        <div style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Chưa có phim nào</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="movie-slider">

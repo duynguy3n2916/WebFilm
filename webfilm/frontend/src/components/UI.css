@@ -33,8 +33,15 @@
   transform: translateY(0);
 }
 
+/* Loại bỏ viền xanh mặc định khi focus cho các nút UI và đồng bộ theo theme */
+.btn:focus,
+.btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .btn:active {
-  transform: scale(0.98);
+  transform: none; /* bỏ hiệu ứng thu nhỏ khi nhấn */
 }
 
 .btn-primary {
@@ -45,8 +52,8 @@
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #000 0%, #222 100%);
-  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.4);
-  transform: translateY(-1px);
+  box-shadow: none;
+  transform: none; /* bỏ hiệu ứng nổi lên */
 }
 
 .btn-outline {
@@ -55,10 +62,15 @@
   color: #374151;
 }
 
+.btn-outline:focus,
+.btn-outline:focus-visible {
+  border-color: #111;
+}
+
 .btn-outline:hover {
   border-color: #111;
   color: #111;
-  transform: translateY(-1px);
+  transform: none; /* bỏ hiệu ứng nổi lên */
 }
 
 .btn-ghost {
@@ -84,6 +96,6 @@
   background: #f0f0f0;
   color: #000000;
   border: 2px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  transform: translateY(-1px);
+  box-shadow: none;
+  transform: none; /* bỏ hiệu ứng nổi lên */
 }
