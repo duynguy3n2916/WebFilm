@@ -755,7 +755,7 @@ app.post('/api/seats/generate-all', async (req, res) => {
   }
 });
 
-// (Đã bỏ mock seats-booked)
+
 
 // ============ CART APIs ============
 // Lấy giỏ hàng của user

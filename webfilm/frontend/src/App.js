@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
 import CartDrawer from "./components/CartDrawer";
-import Home from "./components/Home";
-import Movies from "./components/Movies";
-import Foods from "./components/Foods";
-import MovieDetail from "./components/MovieDetail";
-import BookingFlow from "./components/BookingFlow";
-import UserPanel from "./components/UserPanel";
+import HomeRoute from "./components/routes/HomeRoute";
+import MoviesRoute from "./components/routes/MoviesRoute";
+import FoodsRoute from "./components/routes/FoodsRoute";
+import UserRoute from "./components/routes/UserRoute";
+import MovieDetailRoute from "./components/routes/MovieDetailRoute";
+import BookingRoute from "./components/routes/BookingRoute";
 import PromoSlider from "./components/PromoSlider";
 import Footer from "./components/Footer";
 import { movieService } from "./services/movieService";
@@ -16,18 +17,25 @@ import { bookingService } from "./services/bookingService";
 import { authService } from "./services/authService";
 import "./components/GlobalPrice.css";
 
-export default function App() {
-  const [page, setPage] = useState("home");
-  const [detail, setDetail] = useState(null);
-  const [booking, setBooking] = useState(null);
+// Component chính chứa logic state
+function AppContent() {
   const [tickets, setTickets] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Khởi tạo với fallback movies để tránh lỗi khi chưa load xong
+  const [movies, setMovies] = useState([
+    { id: "m1", title: "Shadow City", poster_url: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop", rating: 8.4, duration: 128, tags: ["Action", "Thriller"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "A rogue detective chases a masked syndicate across a neon-soaked metropolis." },
+    { id: "m2", title: "Starlit Garden", poster_url: "https://images.unsplash.com/photo-1517602302552-471fe67acf66?q=80&w=1200&auto=format&fit=crop", rating: 7.6, duration: 104, tags: ["Romance", "Drama"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "Two strangers meet nightly under meteor showers and rewrite their fates." },
+    { id: "m3", title: "Bitwise Horizon", poster_url: "https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=1200&auto=format&fit=crop", rating: 8.9, duration: 142, tags: ["Sci-Fi", "Adventure"], is_hot: false, status: "soon", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "An engineer discovers a portal compiler that renders new realities." },
+    { id: "m4", title: "Crimson Noodles", poster_url: "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop", rating: 7.9, duration: 96, tags: ["Comedy"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "A food-truck rivalry spirals into a citywide culinary prank war." },
+    { id: "m5", title: "Paper Planets", poster_url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop", rating: 8.2, duration: 118, tags: ["Family", "Fantasy"], is_hot: false, status: "soon", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "Siblings fold origami worlds that unexpectedly come alive." },
+  ]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Expose updateUser function globally for BookingFlow
   useEffect(() => {
@@ -52,15 +60,15 @@ export default function App() {
 
   // Reload movies khi chuyển về trang home để đảm bảo dữ liệu luôn mới
   useEffect(() => {
-    if (page === "home") {
+    if (location.pathname === "/") {
       loadMovies();
     }
-  }, [page]);
+  }, [location.pathname]);
 
   // Tự động tải vé từ DB khi vào trang user hoặc khi user thay đổi
   useEffect(() => {
     const loadUserBookings = async () => {
-      if (user && page === 'user') {
+      if (user && location.pathname === '/user') {
         try {
           const userBookings = await bookingService.getUserBookings(user.id);
           setTickets(userBookings || []);
@@ -70,29 +78,24 @@ export default function App() {
       }
     };
     loadUserBookings();
-  }, [page, user]);
+  }, [location.pathname, user]);
 
   // Scroll về đầu trang khi chuyển trang
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [page]);
+  }, [location.pathname]);
 
   const loadMovies = async () => {
     try {
       setLoading(true);
       const moviesData = await movieService.getAllMovies();
-      setMovies(moviesData);
+      if (moviesData && moviesData.length > 0) {
+        setMovies(moviesData);
+      }
+      // Nếu API lỗi hoặc không có dữ liệu, giữ nguyên fallback movies đã có
     } catch (error) {
       console.error('Lỗi load movies:', error);
-      // Fallback về mock data nếu API lỗi
-      const fallbackMovies = [
-        { id: "m1", title: "Shadow City", poster_url: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop", rating: 8.4, duration: 128, tags: ["Action", "Thriller"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "A rogue detective chases a masked syndicate across a neon-soaked metropolis." },
-        { id: "m2", title: "Starlit Garden", poster_url: "https://images.unsplash.com/photo-1517602302552-471fe67acf66?q=80&w=1200&auto=format&fit=crop", rating: 7.6, duration: 104, tags: ["Romance", "Drama"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "Two strangers meet nightly under meteor showers and rewrite their fates." },
-        { id: "m3", title: "Bitwise Horizon", poster_url: "https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=1200&auto=format&fit=crop", rating: 8.9, duration: 142, tags: ["Sci-Fi", "Adventure"], is_hot: false, status: "soon", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "An engineer discovers a portal compiler that renders new realities." },
-        { id: "m4", title: "Crimson Noodles", poster_url: "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop", rating: 7.9, duration: 96, tags: ["Comedy"], is_hot: true, status: "now", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "A food-truck rivalry spirals into a citywide culinary prank war." },
-        { id: "m5", title: "Paper Planets", poster_url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop", rating: 8.2, duration: 118, tags: ["Family", "Fantasy"], is_hot: false, status: "soon", trailer_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "Siblings fold origami worlds that unexpectedly come alive." },
-      ];
-      setMovies(fallbackMovies);
+      // Giữ nguyên fallback movies đã có sẵn
     } finally {
       setLoading(false);
     }
@@ -170,8 +173,7 @@ export default function App() {
 
   const onPaid = (ticket) => {
     setTickets((t) => [ticket, ...t]);
-    setBooking(null);
-    setPage("user");
+    navigate("/user");
   };
 
   const checkout = async () => {
@@ -198,7 +200,7 @@ export default function App() {
       // Xóa giỏ hàng local và điều hướng
       setCart([]);
       setCartOpen(false);
-      setPage("user");
+      navigate("/user");
       alert("Thanh toán thành công! Điểm và hạng đã được cập nhật.");
     } catch (error) {
       console.error('Lỗi checkout:', error);
@@ -235,15 +237,33 @@ export default function App() {
     setUser(null);
     setTickets([]);
     setCart([]);
-    setPage("home");
+    navigate("/");
     alert('Đã đăng xuất!');
+  };
+
+  // Helper functions cho navigation
+  const handleOpenMovie = (movie) => {
+    navigate(`/movie/${movie.id}`);
+  };
+
+  const handleBookMovie = (movie) => {
+    if (!user) {
+      setAuthMode("login");
+      setAuthOpen(true);
+      return;
+    }
+    navigate(`/booking/${movie.id}`);
+  };
+
+  const handleAuthRequired = () => {
+    setAuthMode("login");
+    setAuthOpen(true);
   };
 
   return (
     <div style={{minHeight:"100vh"}}>
       <Navbar
-        page={page}
-        go={setPage}
+        currentPath={location.pathname}
         openCart={() => setCartOpen(true)}
         cartCount={cart.length}
         user={user}
@@ -253,57 +273,73 @@ export default function App() {
       />
 
       <div className="container">
-        {page === "home"   && <Home movies={movies} loading={loading} onOpenMovie={(m)=>{ setDetail(m); setPage("movie"); window.scrollTo({ top: 0, behavior: 'smooth' }); }} onBookMovie={(m)=>{ 
-          if (!user) {
-            setAuthMode("login");
-            setAuthOpen(true);
-            return;
-          }
-          setBooking({ movie: m }); setPage("booking"); window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }} />}
-        {page === "movies" && <Movies movies={movies} loading={loading} onOpenMovie={(m)=>{ setDetail(m); setPage("movie"); window.scrollTo({ top: 0, behavior: 'smooth' }); }} onBookMovie={(m)=>{ 
-          if (!user) {
-            setAuthMode("login");
-            setAuthOpen(true);
-            return;
-          }
-          setBooking({ movie: m }); setPage("booking"); window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }} />}
-        {page === "foods"  && <Foods addItem={addCart} user={user} onAuthRequired={() => {
-          setAuthMode("login");
-          setAuthOpen(true);
-        }} />}
-        {page === "user"   && <UserPanel user={user} tickets={tickets} onUserUpdate={(userData) => setUser(userData)} />}
-
-        {page === "movie" && detail && (
-          <MovieDetail
-            movie={detail}
-            onClose={() => { setDetail(null); setPage("home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            onBookDirect={(movie) => { 
-              if (!user) {
-                setAuthMode("login");
-                setAuthOpen(true);
-                return;
-              }
-              setBooking({ movie }); setPage("booking"); window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <HomeRoute 
+                movies={movies} 
+                loading={loading} 
+                onOpenMovie={handleOpenMovie} 
+                onBookMovie={handleBookMovie} 
+              />
+            } 
           />
-        )}
-
-        {page === "booking" && booking && (
-          <BookingFlow
-            ctx={booking}
-            onClose={() => { setPage("movie"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            addToCart={addCart}
-            openCart={() => setCartOpen(true)}
-            onPaid={onPaid}
-            user={user}
-            onAuthRequired={() => {
-              setAuthMode("login");
-              setAuthOpen(true);
-            }}
+          <Route 
+            path="/movies" 
+            element={
+              <MoviesRoute 
+                movies={movies} 
+                loading={loading} 
+                onOpenMovie={handleOpenMovie} 
+                onBookMovie={handleBookMovie} 
+              />
+            } 
           />
-        )}
+          <Route 
+            path="/foods" 
+            element={
+              <FoodsRoute 
+                addItem={addCart} 
+                user={user} 
+                onAuthRequired={handleAuthRequired} 
+              />
+            } 
+          />
+          <Route 
+            path="/user" 
+            element={
+              <UserRoute 
+                user={user} 
+                tickets={tickets} 
+                onUserUpdate={(userData) => setUser(userData)} 
+              />
+            } 
+          />
+          <Route 
+            path="/movie/:movieId" 
+            element={
+              <MovieDetailRoute 
+                movies={movies} 
+                user={user} 
+                onAuthRequired={handleAuthRequired} 
+              />
+            } 
+          />
+          <Route 
+            path="/booking/:movieId" 
+            element={
+              <BookingRoute 
+                movies={movies} 
+                user={user} 
+                addToCart={addCart} 
+                openCart={() => setCartOpen(true)} 
+                onPaid={onPaid} 
+                onAuthRequired={handleAuthRequired} 
+              />
+            } 
+          />
+        </Routes>
 
         <PromoSlider />
         <Footer />
@@ -327,5 +363,14 @@ export default function App() {
         onCheckout={checkout}
       />
     </div>
+  );
+}
+
+// Component chính với Router
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }

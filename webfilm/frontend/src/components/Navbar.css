@@ -11,6 +11,7 @@
      background: rgba(255, 255, 255, 0.8);
      backdrop-filter: saturate(180%) blur(8px);
      border-bottom: 1px solid #e5e7eb;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
    
      /* Font: ưu tiên font có hỗ trợ tiếng Việt đầy đủ */
      font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont,
@@ -45,17 +46,19 @@
     font-weight: 800;
     font-size: 18px;
     color: #111;
+    text-decoration: none;
+  }
+  
+  .brand:hover {
+    text-decoration: none;
   }
    
    .logo {
      width: 36px;
      height: 36px;
      border-radius: 12px;
-     background: #111;
-     color: #fff;
-     display: grid;
-     place-items: center;
-     font-size: 16px;
+     object-fit: contain;
+     background: transparent;
    }
    
    /* ====== MENU ====== */

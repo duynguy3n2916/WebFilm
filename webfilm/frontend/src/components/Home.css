@@ -23,7 +23,7 @@
 
 .hero-cell {
   min-width: 100vw;
-  height: 66vh; 
+  height: 100vh; 
   position: relative;
   overflow: hidden;
 }
@@ -33,11 +33,32 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  filter: brightness(0.9);
 }
 
 .hero-cell:hover img {
   transform: scale(1.02);
+  filter: brightness(1);
 }
+
+/* Thêm overlay gradient cho text readability */
+.hero-cell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+
 
 .section-title{
   font-size: 28px;
@@ -68,7 +89,7 @@
   padding: 80px 0; 
   margin-top: -48px;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%),
-              url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1920&h=800&fit=crop') center/cover no-repeat;
+              url('C:/Users/Acer/OneDrive/Desktop/New folder/WebFilm/webfilm/frontend/public/banners/topphim.jpg') center/cover no-repeat;
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
@@ -226,4 +247,8 @@
   .hero-cell { height: 360px; }
   
   .hero { border-radius: 0; }
+}
+
+@media (max-width: 480px) {
+  .hero-cell { height: 300px; }
 }

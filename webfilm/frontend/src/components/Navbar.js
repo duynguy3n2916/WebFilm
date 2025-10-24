@@ -1,26 +1,36 @@
 import './Navbar.css';
-export default function Navbar({ page, go, openCart, cartCount, user, onLoginClick, onSignupClick, onLogout }) {
-  const handleNavigate = (pageName) => {
-    go(pageName);
-    window.scrollTo(0, 0);
-  };
+import { Link, useLocation } from 'react-router-dom';
+
+export default function Navbar({ currentPath, openCart, cartCount, user, onLoginClick, onSignupClick, onLogout }) {
+  const location = useLocation();
+  const currentPage = location.pathname;
   
   return (
     <div className="nav">
       <div className="container nav-inner">
-        <div className="brand">
-          <div className="logo">🎬</div>
+        <Link to="/" className="brand">
+          <img src="/banners/logo.png" alt="CinemaX Logo" className="logo" />
           CinemaX
-        </div>
+        </Link>
         <nav className="menu">
-          {[["home","Trang chủ"],["movies","Phim"],["foods","Đồ ăn & uống"]].map(([k,label])=> (
-            <button key={k} onClick={()=>handleNavigate(k)} className={`btn btn-outline ${page===k?"active":""}`}>{label}</button>
+          {[
+            {path: "/", label: "Trang chủ"},
+            {path: "/movies", label: "Phim"},
+            {path: "/foods", label: "Đồ ăn & uống"}
+          ].map(({path, label}) => (
+            <Link 
+              key={path} 
+              to={path} 
+              className={`btn btn-outline ${currentPage === path ? "active" : ""}`}
+            >
+              {label}
+            </Link>
           ))}
         </nav>
         <div className="right">
           {user ? (
             <>
-              <button onClick={()=>handleNavigate("user")} className="btn btn-outline user-btn">👤 {user.name}</button>
+              <Link to="/user" className="btn btn-outline user-btn">👤 {user.name}</Link>
               <button onClick={onLogout} className="btn btn-outline">ĐĂNG XUẤT</button>
             </>
           ) : (

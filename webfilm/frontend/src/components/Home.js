@@ -5,9 +5,49 @@ import { H2 } from './UI';
 import { movieService } from '../services/movieService';
 function useInterval(callback, delay){ const saved=useRef(callback); useEffect(()=>{saved.current=callback;}); useEffect(()=>{ if(delay==null) return; const id=setInterval(()=>saved.current(),delay); return ()=>clearInterval(id); },[delay]); }
 function HeroSlider({ slides }){
-  const [index,setIndex]=useState(0); const ref=useRef(null); useInterval(()=>setIndex(i=>(i+1)%slides.length),3000);
-  useEffect(()=>{ const el=ref.current;if(!el) return; let startX=0,cur=0,drag=false; const down=e=>{drag=true;startX=("touches"in e?e.touches[0].clientX:e.clientX);cur=startX}; const move=e=>{if(!drag) return;cur=("touches"in e?e.touches[0].clientX:e.clientX); const dx=cur-startX; el.style.transform=`translateX(calc(${-index*100}% + ${dx}px))`;}; const up=()=>{if(!drag) return; const dx=cur-startX; drag=false; el.style.transform=""; if(dx>80) setIndex(i=>(i-1+slides.length)%slides.length); else if(dx<-80) setIndex(i=>(i+1)%slides.length)}; el.addEventListener("mousedown",down); el.addEventListener("mousemove",move); window.addEventListener("mouseup",up); el.addEventListener("touchstart",down,{passive:true}); el.addEventListener("touchmove",move,{passive:true}); el.addEventListener("touchend",up); return ()=>{ el.removeEventListener("mousedown",down); el.removeEventListener("mousemove",move); window.removeEventListener("mouseup",up); el.removeEventListener("touchstart",down); el.removeEventListener("touchmove",move); el.removeEventListener("touchend",up); }; },[index,slides.length]);
-  return (<div className="hero"><div ref={ref} className="hero-row" style={{transform:`translateX(${-index*100}%)`}}>{slides.map((s,i)=>(<div key={i} className="hero-cell"><img src={s} alt=""/></div>))}</div><div className="dots">{slides.map((_,i)=>(<button key={i} className={`dot ${i===index?'on':''}`} onClick={()=>setIndex(i)}/>))}</div></div>);
+  const [index,setIndex]=useState(0); 
+  const ref=useRef(null); 
+  useInterval(()=>setIndex(i=>(i+1)%slides.length),4000); // Tăng thời gian hiển thị lên 4 giây
+  
+  useEffect(()=>{ 
+    const el=ref.current;
+    if(!el) return; 
+    let startX=0,cur=0,drag=false; 
+    const down=e=>{drag=true;startX=("touches"in e?e.touches[0].clientX:e.clientX);cur=startX}; 
+    const move=e=>{if(!drag) return;cur=("touches"in e?e.touches[0].clientX:e.clientX); const dx=cur-startX; el.style.transform=`translateX(calc(${-index*100}% + ${dx}px))`;}; 
+    const up=()=>{if(!drag) return; const dx=cur-startX; drag=false; el.style.transform=""; if(dx>80) setIndex(i=>(i-1+slides.length)%slides.length); else if(dx<-80) setIndex(i=>(i+1)%slides.length)}; 
+    el.addEventListener("mousedown",down); 
+    el.addEventListener("mousemove",move); 
+    window.addEventListener("mouseup",up); 
+    el.addEventListener("touchstart",down,{passive:true}); 
+    el.addEventListener("touchmove",move,{passive:true}); 
+    el.addEventListener("touchend",up); 
+    return ()=>{ 
+      el.removeEventListener("mousedown",down); 
+      el.removeEventListener("mousemove",move); 
+      window.removeEventListener("mouseup",up); 
+      el.removeEventListener("touchstart",down); 
+      el.removeEventListener("touchmove",move); 
+      el.removeEventListener("touchend",up); 
+    }; 
+  },[index,slides.length]);
+  
+  return (
+    <div className="hero">
+      <div ref={ref} className="hero-row" style={{transform:`translateX(${-index*100}%)`}}>
+        {slides.map((s,i)=>(
+          <div key={i} className="hero-cell">
+            <img src={s} alt={`Banner ${i+1}`} />
+          </div>
+        ))}
+      </div>
+      <div className="dots">
+        {slides.map((_,i)=>(
+          <button key={i} className={`dot ${i===index?'on':''}`} onClick={()=>setIndex(i)}/>
+        ))}
+      </div>
+    </div>
+  );
 }
 export default function Home({ movies, loading, onOpenMovie, onBookMovie }){
   const [hotMovies, setHotMovies] = useState([]);
@@ -15,7 +55,14 @@ export default function Home({ movies, loading, onOpenMovie, onBookMovie }){
   const [comingSoonMovies, setComingSoonMovies] = useState([]);
   const [moviesLoading, setMoviesLoading] = useState(true);
 
-  const slides=useMemo(()=>movies.map(m=>m.poster_url || m.poster).slice(0,5),[movies]);
+  // Danh sách ảnh banner tự chọn
+  const bannerSlides = [
+    process.env.PUBLIC_URL + '/banners/banner1.jpg',
+    process.env.PUBLIC_URL + '/banners/banner2.jpg',
+    process.env.PUBLIC_URL + '/banners/banner3.jpg'
+  ];
+
+  const slides=useMemo(()=>bannerSlides,[bannerSlides]);
 
   // Load các loại phim từ API
   useEffect(() => {
