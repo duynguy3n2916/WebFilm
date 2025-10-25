@@ -55,11 +55,12 @@ export default function MovieSlider({ movies, onOpen, onBook, title, showViewMor
 
   return (
     <div className="movie-slider">
-      {title && (
-        <div className="slider-header">
-          <h2 className="slider-title">{title}</h2>
-        </div>
-      )}
+      <div className="movie-slider-content">
+        {title && (
+          <div className="slider-header">
+            <h2 className="slider-title">{title}</h2>
+          </div>
+        )}
       
       {!isExpanded && (
       <div className="slider-container">
@@ -135,6 +136,7 @@ export default function MovieSlider({ movies, onOpen, onBook, title, showViewMor
           </Button>
         </div>
       )}
+      </div>
     </div>
   );
 }

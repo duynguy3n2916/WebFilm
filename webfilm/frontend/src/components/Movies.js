@@ -1,6 +1,7 @@
 import './Movies.css'; 
 import React, { useMemo, useState } from 'react'; 
 import MovieSlider from './MovieSlider';
+import MovieCard from './MovieCard';
 
 export default function Movies({ movies, loading, onOpenMovie, onBookMovie }){
   const noFocusStyle = { outline: 'none', boxShadow: 'none' };
@@ -59,9 +60,11 @@ export default function Movies({ movies, loading, onOpenMovie, onBookMovie }){
   if (loading) {
     return (
       <div className="movies">
-        <div className="movies-header">
-          <h1 className="movies-title">🎬 Khám phá phim</h1>
-          <p className="movies-subtitle">Đang tải dữ liệu...</p>
+        <div className="movies-content">
+          <div className="movies-header">
+            <h1 className="movies-title">Khám phá phim</h1>
+            <p className="movies-subtitle">Đang tải dữ liệu...</p>
+          </div>
         </div>
       </div>
     );
@@ -69,98 +72,99 @@ export default function Movies({ movies, loading, onOpenMovie, onBookMovie }){
 
   return (
     <div className="movies">
-      <div className="movies-header">
-        <h1 className="movies-title">🎬 Khám phá phim</h1>
-        <p className="movies-subtitle">Tìm kiếm và lọc phim theo sở thích của bạn</p>
-      </div>
+      <div className="movies-content">
+        <div className="movies-header">
+          <h1 className="movies-title">Khám phá phim</h1>
+          <p className="movies-subtitle">Tìm kiếm và lọc phim theo sở thích của bạn</p>
+        </div>
 
-      <div className="filters-container">
-        <div className="search-section">
-          <div className="search-wrapper">
-            <div className="search-icon">🔍</div>
-            <input 
-              value={q} 
-              onChange={e=>setQ(e.target.value)} 
-              placeholder="Tìm phim theo tên hoặc thể loại..."
-              className="search-input"
-            />
-            {q && (
-              <button className="clear-search" onClick={()=>setQ('')}>
-                ×
+        <div className="filters-container">
+          <div className="search-section">
+            <div className="search-wrapper">
+              <div className="search-icon">🔍</div>
+              <input 
+                value={q} 
+                onChange={e=>setQ(e.target.value)} 
+                placeholder="Tìm phim theo tên hoặc thể loại..."
+                className="search-input"
+              />
+              {q && (
+                <button className="clear-search" onClick={()=>setQ('')}>
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="filters-section">
+            <div className="filter-group">
+              <label className="filter-label">Trạng thái:</label>
+              <div className="filter-buttons">
+                {['Tất cả','Đang chiếu','Sắp chiếu'].map(s=> (
+                  <button 
+                    key={s} 
+                    className={`filter-btn ${status===s?'active':''}`}
+                    onClick={()=>setStatus(s)}
+                    style={noFocusStyle}
+                    onMouseDown={preventFocus}
+                  >
+                    {s === 'Đang chiếu' ? '🎬' : s === 'Sắp chiếu' ? '⏰' : '📋'} {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="filter-label">Thể loại:</label>
+              <div className="filter-buttons genres-filter">
+                {allGenres.map(g=> (
+                  <button 
+                    key={g} 
+                    className={`filter-btn ${genre===g?'active':''}`}
+                    onClick={()=>setGenre(g)}
+                    style={noFocusStyle}
+                    onMouseDown={preventFocus}
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {hasActiveFilters && (
+            <div className="filter-actions">
+              <button className="clear-filters-btn" onClick={clearFilters} style={noFocusStyle} onMouseDown={preventFocus}>
+                Xóa bộ lọc
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        <div className="filters-section">
-          <div className="filter-group">
-            <label className="filter-label">Trạng thái:</label>
-            <div className="filter-buttons">
-              {['Tất cả','Đang chiếu','Sắp chiếu'].map(s=> (
-                <button 
-                  key={s} 
-                  className={`filter-btn ${status===s?'active':''}`}
-                  onClick={()=>setStatus(s)}
-                  style={noFocusStyle}
-                  onMouseDown={preventFocus}
-                >
-                  {s === 'Đang chiếu' ? '🎬' : s === 'Sắp chiếu' ? '⏰' : '📋'} {s}
-                </button>
+        <div className="results-section">
+          <div className="results-header">
+            <h2 className="results-title">{getResultTitle()}</h2>
+          </div>
+          
+          {filtered.length > 0 ? (
+            <div className="movies-grid">
+              {filtered.map(movie => (
+                <div key={movie.id} className="movie-grid-item">
+                  <MovieCard m={movie} onOpen={() => onOpenMovie(movie)} onBook={() => onBookMovie(movie)} />
+                </div>
               ))}
             </div>
-          </div>
-
-          <div className="filter-group">
-            <label className="filter-label">Thể loại:</label>
-            <div className="filter-buttons genres-filter">
-              {allGenres.map(g=> (
-                <button 
-                  key={g} 
-                  className={`filter-btn ${genre===g?'active':''}`}
-                  onClick={()=>setGenre(g)}
-                  style={noFocusStyle}
-                  onMouseDown={preventFocus}
-                >
-                  {g}
-                </button>
-              ))}
+          ) : (
+            <div className="no-results">
+              <div className="no-results-icon">😔</div>
+              <h3>Không tìm thấy phim nào</h3>
+              <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+              <button className="btn btn-primary" onClick={clearFilters}>
+                Xóa bộ lọc
+              </button>
             </div>
-          </div>
+          )}
         </div>
-
-        {hasActiveFilters && (
-          <div className="filter-actions">
-            <button className="clear-filters-btn" onClick={clearFilters} style={noFocusStyle} onMouseDown={preventFocus}>
-              🗑️ Xóa bộ lọc
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="results-section">
-        <div className="results-header">
-          <h2 className="results-title">{getResultTitle()}</h2>
-        </div>
-        
-        {filtered.length > 0 ? (
-          <MovieSlider 
-            movies={filtered} 
-            onOpen={onOpenMovie}
-            onBook={onBookMovie}
-            title=""
-            showViewMore={true}
-            loading={false}
-          />
-        ) : (
-          <div className="no-results">
-            <div className="no-results-icon">😔</div>
-            <h3>Không tìm thấy phim nào</h3>
-            <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
-            <button className="btn btn-primary" onClick={clearFilters}>
-              Xóa bộ lọc
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

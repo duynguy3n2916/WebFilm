@@ -120,8 +120,9 @@ export default function Home({ movies, loading, onOpenMovie, onBookMovie }){
       <HeroSlider slides={slides}/>
       
       <div className="hot-five">
-        <h2 className="section-title"> TOP PHIM ĐANG HOT</h2>
-        <div className="hot-grid">
+        <div className="hot-five-content">
+          <h2 className="section-title"> TOP PHIM ĐANG HOT</h2>
+          <div className="hot-grid">
           {hotMovies.map((m, index)=> (
             <div key={m.id} className="hot-card" onClick={()=>onOpenMovie(m)}>
               <div className="hot-rank">{index + 1}</div>
@@ -137,26 +138,29 @@ export default function Home({ movies, loading, onOpenMovie, onBookMovie }){
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
       
-      <MovieSlider 
-        movies={nowShowingMovies} 
-        onOpen={onOpenMovie}
-        onBook={onBookMovie}
-        title="PHIM ĐANG CHIẾU"
-        onViewMore={handleViewMore}
-        loading={moviesLoading}
-      />
-      
-      <MovieSlider 
-        movies={comingSoonMovies} 
-        onOpen={onOpenMovie}
-        onBook={onBookMovie}
-        title="PHIM SẮP CHIẾU"
-        onViewMore={handleViewMore}
-        loading={moviesLoading}
-      />
+      <div className="seamless-background-wrapper">
+        <MovieSlider 
+          movies={nowShowingMovies} 
+          onOpen={onOpenMovie}
+          onBook={onBookMovie}
+          title="PHIM ĐANG CHIẾU"
+          onViewMore={handleViewMore}
+          loading={moviesLoading}
+        />
+        
+        <MovieSlider 
+          movies={comingSoonMovies} 
+          onOpen={onOpenMovie}
+          onBook={onBookMovie}
+          title="PHIM SẮP CHIẾU"
+          onViewMore={handleViewMore}
+          loading={moviesLoading}
+        />
+      </div>
     </div>
   );
 }

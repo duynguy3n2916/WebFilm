@@ -1,6 +1,16 @@
 .promo-slider-section {
   margin-bottom: 48px;
   padding: 0 8px;
+  position: relative;
+}
+
+/* Container cho nội dung */
+.promo-slider-content-wrapper {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .promo-slider-header {
@@ -15,17 +25,18 @@
 .promo-slider-title {
   font-size: 28px;
   font-weight: 900;
-  color: #111;
+  color: #fff;
   margin: 0;
   text-transform: uppercase;
   text-align: center;
   padding: 12px 32px;
-  border: 4px solid #111;
+  border: 4px solid #fff;
   border-radius: 999px;
   letter-spacing: 1px;
-  background: #fff;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 16px rgba(255,255,255,0.2);
   display: inline-block;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .promo-slider-container {
@@ -212,6 +223,11 @@
 @media (max-width: 768px) {
   .promo-slider-section {
     margin-bottom: 32px;
+    padding: 0 8px;
+  }
+  
+  .promo-slider-content-wrapper {
+    padding: 60px 0;
   }
   
   .promo-slider-header {

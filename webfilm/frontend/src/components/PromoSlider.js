@@ -44,9 +44,10 @@ export default function PromoSlider() {
 
   return (
     <div className="promo-slider-section">
-      <div className="promo-slider-header">
-        <h2 className="promo-slider-title">ƯU ĐÃI ĐẶC BIỆT</h2>
-      </div>
+      <div className="promo-slider-content-wrapper">
+        <div className="promo-slider-header">
+          <h2 className="promo-slider-title">ƯU ĐÃI ĐẶC BIỆT</h2>
+        </div>
       
       <div className="promo-slider-container">
         <button className="promo-nav promo-nav-left" onClick={prevSlide}>
@@ -92,6 +93,7 @@ export default function PromoSlider() {
             onClick={() => setCurrentIndex(index)}
           />
         ))}
+      </div>
       </div>
     </div>
   );

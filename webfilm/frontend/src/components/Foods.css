@@ -1,6 +1,33 @@
 .foods-page {
   display: flex;
   flex-direction: column;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+/* Background wrapper giống trang chủ */
+.foods-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%),
+              url('C:/Users/Acer/OneDrive/Desktop/New folder/WebFilm/webfilm/frontend/public/images/black-smoky-art-abstract.jpg') center/cover no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+}
+
+/* Container cho nội dung */
+.foods-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
   padding: 32px 16px;
 }
@@ -87,8 +114,9 @@
 
 .filter-btn.active {
   background: linear-gradient(135deg, #111 0%, #333 100%);
-  border-color: #111;
+  border-color: #fff;
   color: white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .no-results {
@@ -113,21 +141,22 @@
   margin: 0 0 20px 0;
 }
 
-.foods-header {
+.foods-content .foods-header {
   text-align: center;
   margin-bottom: 16px;
 }
 
-.foods-title {
+.foods-content .foods-title {
   font-size: 24px;
   font-weight: 700;
-  color: #111;
+  color: #fff;
   margin: 0 0 8px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.foods-subtitle {
+.foods-content .foods-subtitle {
   font-size: 16px;
-  color: #6b7280;
+  color: rgba(255,255,255,0.8);
   margin: 0;
 }
 
@@ -275,6 +304,14 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .foods-page::before {
+    background-attachment: scroll; /* Tắt fixed background trên mobile để tăng performance */
+  }
+  
+  .foods-content {
+    padding: 16px 8px;
+  }
+  
   .foods-grid {
     grid-template-columns: 1fr;
     gap: 16px;

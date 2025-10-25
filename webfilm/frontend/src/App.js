@@ -341,8 +341,10 @@ function AppContent() {
           />
         </Routes>
 
-        <PromoSlider />
-        <Footer />
+        <div className="seamless-background-wrapper">
+          <PromoSlider />
+          <Footer />
+        </div>
       </div>
 
       <AuthModal

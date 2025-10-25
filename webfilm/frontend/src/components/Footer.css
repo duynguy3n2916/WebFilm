@@ -1,12 +1,15 @@
 /* ====== FOOTER ====== */
 .footer {
-  background: #111;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(8px);
+  color: #111;
   padding: 48px 0 24px;
   margin-top: 80px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   box-sizing: border-box;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .footer-container {
@@ -31,10 +34,10 @@
   font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #fff;
+  color: #111;
   margin: 0 0 16px 0;
   padding-bottom: 8px;
-  border-bottom: 3px solid #fff;
+  border-bottom: 3px solid #111;
   letter-spacing: 0.5px;
 }
 
@@ -49,15 +52,19 @@
 }
 
 .footer-list a {
-  color: #fff;
+  color: #4b5563;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.2s ease;
 }
 
+.footer-list a:hover {
+  color: #111;
+}
+
 
 .footer-contact {
-  color: #fff;
+  color: #4b5563;
   font-size: 14px;
   line-height: 1.8;
 }
@@ -78,7 +85,7 @@
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #fff;
+  color: #111;
   margin: 0 0 16px 0;
   letter-spacing: 0.5px;
 }

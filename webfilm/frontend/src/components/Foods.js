@@ -64,9 +64,11 @@ export default function Foods({ addItem, user, onAuthRequired }) {
   if (loading) {
     return (
       <div className="foods-page">
-        <div className="foods-header">
-          <h2 className="foods-title">🍿 Đồ ăn & Đồ uống</h2>
-          <p className="foods-subtitle">Đang tải dữ liệu...</p>
+        <div className="foods-content">
+          <div className="foods-header">
+            <h2 className="foods-title">🍿 Đồ ăn & Đồ uống</h2>
+            <p className="foods-subtitle">Đang tải dữ liệu...</p>
+          </div>
         </div>
       </div>
     );
@@ -74,104 +76,106 @@ export default function Foods({ addItem, user, onAuthRequired }) {
 
   return (
     <div className="foods-page">
-      <div className="foods-header">
-        <h2 className="foods-title">🍿 Đồ ăn & Đồ uống</h2>
-        <p className="foods-subtitle">Làm phong phú trải nghiệm xem phim của bạn</p>
-      </div>
+      <div className="foods-content">
+        <div className="foods-header">
+          <h2 className="foods-title">🍿 Đồ ăn & Đồ uống</h2>
+          <p className="foods-subtitle">Làm phong phú trải nghiệm xem phim của bạn</p>
+        </div>
 
-      {/* Search và Filter */}
-      <div className="foods-filters">
-        <div className="search-wrapper">
-          <div className="search-icon">🔍</div>
-          <input 
-            type="text"
-            placeholder="Tìm đồ ăn, đồ uống..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-          {searchTerm && (
+        {/* Search và Filter */}
+        <div className="foods-filters">
+          <div className="search-wrapper">
+            <div className="search-icon">🔍</div>
+            <input 
+              type="text"
+              placeholder="Tìm đồ ăn, đồ uống..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            {searchTerm && (
+              <button 
+                className="clear-search" 
+                onClick={() => setSearchTerm('')}
+              >
+                ×
+              </button>
+            )}
+          </div>
+
+          <div className="filter-buttons">
             <button 
-              className="clear-search" 
-              onClick={() => setSearchTerm('')}
+              className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
+              onClick={() => setFilterType('all')}
             >
-              ×
+              📋 Tất cả
             </button>
+            <button 
+              className={`filter-btn ${filterType === 'combo' ? 'active' : ''}`}
+              onClick={() => setFilterType('combo')}
+            >
+              🍿 Combo
+            </button>
+            <button 
+              className={`filter-btn ${filterType === 'food' ? 'active' : ''}`}
+              onClick={() => setFilterType('food')}
+            >
+              🍿 Đồ ăn
+            </button>
+            <button 
+              className={`filter-btn ${filterType === 'drink' ? 'active' : ''}`}
+              onClick={() => setFilterType('drink')}
+            >
+              🥤 Đồ uống
+            </button>
+          </div>
+        </div>
+
+        <div className="foods-grid">
+          {filteredCombos.length > 0 ? filteredCombos.map(f => (
+            <div key={f.id} className="food-card">
+              <div className="food-icon">{getFoodIcon(f.name)}</div>
+              
+              <div className="food-content">
+                <h4 className="food-name">{f.name}</h4>
+                <p className="food-description">{f.items}</p>
+                
+                <div className="food-price">{money(f.price)}</div>
+                
+                <Button 
+                  onClick={() => handleAddItem(f)}
+                  className="add-food-btn"
+                >
+                  <span className="btn-icon">➕</span>
+                  Thêm vào giỏ
+                </Button>
+              </div>
+              
+              <div className="food-badge">{f.type === 'combo' ? 'Combo' : f.type === 'food' ? 'Đồ ăn' : 'Đồ uống'}</div>
+            </div>
+          )) : (
+            <div className="no-results">
+              <div className="no-results-icon">🍿</div>
+              <h3>Không tìm thấy món nào</h3>
+              <p>Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+              <button 
+                className="btn btn-primary" 
+                onClick={() => {
+                  setSearchTerm('');
+                  setFilterType('all');
+                }}
+              >
+                Xóa bộ lọc
+              </button>
+            </div>
           )}
         </div>
 
-        <div className="filter-buttons">
-          <button 
-            className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
-            onClick={() => setFilterType('all')}
-          >
-            📋 Tất cả
-          </button>
-          <button 
-            className={`filter-btn ${filterType === 'combo' ? 'active' : ''}`}
-            onClick={() => setFilterType('combo')}
-          >
-            🍿 Combo
-          </button>
-          <button 
-            className={`filter-btn ${filterType === 'food' ? 'active' : ''}`}
-            onClick={() => setFilterType('food')}
-          >
-            🍿 Đồ ăn
-          </button>
-          <button 
-            className={`filter-btn ${filterType === 'drink' ? 'active' : ''}`}
-            onClick={() => setFilterType('drink')}
-          >
-            🥤 Đồ uống
-          </button>
-        </div>
-      </div>
-
-      <div className="foods-grid">
-        {filteredCombos.length > 0 ? filteredCombos.map(f => (
-          <div key={f.id} className="food-card">
-            <div className="food-icon">{getFoodIcon(f.name)}</div>
-            
-            <div className="food-content">
-              <h4 className="food-name">{f.name}</h4>
-              <p className="food-description">{f.items}</p>
-              
-              <div className="food-price">{money(f.price)}</div>
-              
-              <Button 
-                onClick={() => handleAddItem(f)}
-                className="add-food-btn"
-              >
-                <span className="btn-icon">➕</span>
-                Thêm vào giỏ
-              </Button>
-            </div>
-            
-            <div className="food-badge">{f.type === 'combo' ? 'Combo' : f.type === 'food' ? 'Đồ ăn' : 'Đồ uống'}</div>
+        <div className="foods-tips">
+          <div className="tip-icon">💡</div>
+          <div className="tip-content">
+            <strong>Mẹo nhỏ:</strong> Mua combo sẽ tiết kiệm hơn khi mua riêng lẻ!
           </div>
-        )) : (
-          <div className="no-results">
-            <div className="no-results-icon">🍿</div>
-            <h3>Không tìm thấy món nào</h3>
-            <p>Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
-            <button 
-              className="btn btn-primary" 
-              onClick={() => {
-                setSearchTerm('');
-                setFilterType('all');
-              }}
-            >
-              Xóa bộ lọc
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="foods-tips">
-        <div className="tip-icon">💡</div>
-        <div className="tip-content">
-          <strong>Mẹo nhỏ:</strong> Mua combo sẽ tiết kiệm hơn khi mua riêng lẻ!
         </div>
       </div>
     </div>
