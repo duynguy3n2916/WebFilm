@@ -24,14 +24,14 @@ export default function AuthModal({ open, onClose, mode, setMode, onLogin, onSig
             <label>Họ tên</label><input value={name} onChange={e=>setName(e.target.value)} />
             <label>Email</label><input type="email" value={email} onChange={e=>setEmail(e.target.value)} />
             <label>Mật khẩu</label><input type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-            <div className="row"><Button variant="outline" onClick={onClose}>Hủy</Button><Button onClick={submit}>Tạo tài khoản</Button></div>
+            <div className="row"><Button variant="outline" onClick={onClose}>Hủy</Button><Button variant="login" onClick={submit}>Tạo tài khoản</Button></div>
           </div>
         )}
         {mode==='login' && (
           <div className="form">
             <label>Email</label><input type="email" value={email} onChange={e=>setEmail(e.target.value)} />
             <label>Mật khẩu</label><input type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-            <div className="row"><Button variant="outline" onClick={onClose}>Hủy</Button><Button onClick={submit}>Đăng nhập</Button></div>
+            <div className="row"><Button variant="outline" onClick={onClose}>Hủy</Button><Button variant="login" onClick={submit}>Đăng nhập</Button></div>
           </div>
         )}
       </div>
