@@ -12,7 +12,8 @@ export default function PromoSlider() {
       subtitle: "CHỈ TỪ",
       description: "U22 – GIÁ SIÊU NHẸ, TRẢI NGHIỆM SIÊU ĐỈNH",
       theme: "summer",
-      icon: "🌞"
+      icon: "🌞",
+      image: "/banners/he.jpg"
     },
     {
       id: 2,
@@ -21,7 +22,8 @@ export default function PromoSlider() {
       subtitle: "SAU 22 GIỜ",
       description: "ƯU ĐÃI SUẤT CHIẾU ĐÊM, CHỈ TỪ 48K",
       theme: "night",
-      icon: "🌙"
+      icon: "🌙",
+      image: "/banners/khuya.jpg"
     },
     {
       id: 3,
@@ -30,7 +32,8 @@ export default function PromoSlider() {
       subtitle: "VÉ + BẮP NƯỚC",
       description: "BACK TO SCHOOL U22 - VÉ XEM PHIM VÀ COMBO BẮP NƯỚC CHỈ 79K",
       theme: "school",
-      icon: "🎓"
+      icon: "🎓",
+      image: "/banners/hoc.jpg"
     }
   ];
 
@@ -61,7 +64,10 @@ export default function PromoSlider() {
           >
             {promos.map((promo) => (
               <div key={promo.id} className="promo-card">
-                <div className={`promo-card-bg promo-theme-${promo.theme}`}>
+                <div 
+                  className={`promo-card-bg promo-theme-${promo.theme}`}
+                  style={{ backgroundImage: `url(${promo.image})` }}
+                >
                   <div className="promo-logo">CinemaX</div>
                   <div className="promo-main-content">
                     <div className="promo-icon">{promo.icon}</div>

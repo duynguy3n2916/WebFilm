@@ -277,7 +277,7 @@
 
 .sub {
   font-size: 14px;
-  color: #6b7280;
+  color: #333 !important;
   margin-bottom: 16px;
   padding: 12px;
   background: #f8fafc;

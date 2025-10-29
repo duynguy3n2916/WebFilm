@@ -40,7 +40,7 @@
 }
 
 .step-total {
-  color: #666;
+  color: #333 !important;
 }
 
 /* Movie summary */
@@ -75,7 +75,7 @@
 .movie-meta {
   display: flex;
   gap: 12px;
-  color: #555;
+  color: #333 !important;
   font-size: 14px;
 }
 
@@ -111,7 +111,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #555;
+  color: #333 !important;
   font-weight: 600;
 }
 .detail-icon {
@@ -119,6 +119,7 @@
 }
 .detail-value {
   font-weight: 600;
+  color: #333 !important;
 }
 
 /* Section header (seats/combos) */
@@ -192,7 +193,7 @@
   font-size: 14px;
 }
 .combo-quantity {
-  color: #6b7280;
+  color: #333 !important;
 }
 
 .combo-actions {
