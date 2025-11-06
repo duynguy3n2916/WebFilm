@@ -1,0 +1,198 @@
+/* ====== FONT (ưu tiên tiếng Việt) ====== */
+/* Nếu online, bạn có thể giữ @import dưới đây.
+   Nếu offline, bỏ @import và đảm bảo đã nhúng font local tương ứng. */
+   @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap');
+
+   /* ====== NAVBAR ====== */
+   .nav {
+     position: sticky;
+     top: 0;
+     z-index: 40;
+     background: rgba(255, 255, 255, 0.8);
+     backdrop-filter: saturate(180%) blur(8px);
+     border-bottom: 1px solid #e5e7eb;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+   
+     /* Font: ưu tiên font có hỗ trợ tiếng Việt đầy đủ */
+     font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont,
+                  'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+   
+     /* Smoothing để chữ mượt khi in hoa */
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     text-rendering: optimizeLegibility;
+   
+     /* Bỏ text-transform toàn cục để tránh lỗi glyph tiếng Việt */
+     text-transform: none;
+     
+   }
+   
+   /* ====== NAVBAR INNER CONTAINER ====== */
+   .nav-inner {
+     display: flex;
+     align-items: center;
+     gap: 16px;
+     height: 80px; /* cao hơn, chữ dễ nhìn hơn */
+     padding: 0 16px; /* thêm padding hai bên để dễ nhìn hơn */
+     max-width: 1200px;
+     margin: 0 auto;
+   }
+   
+  /* ====== BRAND / LOGO ====== */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 18px;
+    color: #111;
+    text-decoration: none;
+  }
+  
+  .brand:hover {
+    text-decoration: none;
+  }
+   
+   .logo {
+     width: 36px;
+     height: 36px;
+     border-radius: 12px;
+     object-fit: contain;
+     background: transparent;
+   }
+   
+   /* ====== MENU ====== */
+   .menu {
+     display: flex;
+     gap: 14px; /* khoảng cách giữa các nút */
+   }
+   
+   .nav .menu .btn {
+     /* Reset mặc định của .btn khi nằm trong navbar */
+     all: unset;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+   
+     padding: 10px 14px;
+     border-radius: 999px;         /* dạng pill */
+     border: 1px solid transparent;
+     cursor: pointer;
+   
+     /* Chỉ in hoa ở nút để tránh lỗi chữ ở nơi khác */
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+   
+     font-weight: 800;
+     font-size: 16px;
+   
+     color: #4b5563;               /* gray-600 */
+     background: transparent;
+     transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .06s ease;
+   }
+   
+   .nav .menu .btn:hover,
+   .nav .menu .btn:focus-visible {
+     color: #fff;
+     background: #111;             /* hover đen hẳn */
+     border-color: #111;
+     transform: translateY(-1px);
+   }
+   
+   .nav .menu .btn.active {
+     color: #fff;
+     background: #111;             /* đang chọn đen hẳn */
+     border-color: #111;
+   }
+   
+   /* ====== RIGHT SIDE (User, Cart, etc.) ====== */
+   .right {
+     margin-left: auto;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+   }
+   
+   /* Nút bên phải thống nhất style với menu */
+   .right .btn {
+     all: unset;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+   
+     padding: 10px 14px;
+     border-radius: 999px;
+     border: 2px solid #111111bf;
+   
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+   
+     font-weight: 800;
+     font-size: 14px;
+     color: #111;
+     background: #fff;
+     cursor: pointer;
+     transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .06s ease;
+   }
+   
+   .right .btn:hover,
+   .right .btn:focus-visible {
+     color: #fff;
+     background: #111;
+     border-color: #111;
+     transform: translateY(-1px);
+   }
+   
+/* Nút "ĐĂNG NHẬP" dạng primary nổi bật */
+.right .btn.btn-primary {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.right .btn.btn-primary:hover,
+.right .btn.btn-primary:focus-visible {
+  filter: brightness(1.05);
+}
+
+/* Nút user - không in hoa tên */
+.right .user-btn {
+  text-transform: none;
+}
+   
+   /* ====== CART & BADGE ====== */
+   .cart {
+     position: relative;
+     min-width: 44px; /* đảm bảo clickable area */
+     text-align: center;
+   }
+   
+   .badge-count {
+    top: 0;
+    right: 0;
+    transform: translate(40%, -40%);
+  
+    display: grid;
+    place-items: center;
+  
+    min-width: 18px;          /* 2 chữ số vẫn gọn */
+    height: 18px;
+    padding: 0 5px;
+  
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+  
+    background: #111;
+    color: #fff;
+    border-radius: 999px;
+    border: 2px solid #fff;   /* viền tách khỏi nền navbar */
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+   }
+   
+   /* ====== ACCESSIBILITY ====== */
+   .menu .btn:focus-visible,
+   .right .btn:focus-visible {
+     outline: 2px solid #111;
+     outline-offset: 2px;
+   }
+   

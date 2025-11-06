@@ -1,0 +1,344 @@
+/* =========================
+   ShowtimeInfo.css (FULL)
+   ========================= */
+
+/* Container */
+.showtime-info {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+}
+
+/* Header */
+.info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.info-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.step-number {
+  background: #111;
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.step-total {
+  color: #333 !important;
+}
+
+/* Movie summary */
+.movie-details {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fafafa;
+  margin-bottom: 14px;
+}
+
+.movie-poster img {
+  width: 56px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.movie-info {
+  flex: 1;
+}
+
+.movie-title {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.movie-meta {
+  display: flex;
+  gap: 12px;
+  color: #333 !important;
+  font-size: 14px;
+}
+
+/* ====== Shared blocks ====== */
+.showtime-details,
+.seats-section,
+.combos-section,
+.total-section {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.showtime-details {
+  margin-bottom: 12px;
+}
+
+/* Row in details */
+.detail-section {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #333 !important;
+  font-weight: 600;
+}
+.detail-icon {
+  font-size: 16px;
+}
+.detail-value {
+  font-weight: 600;
+  color: #333 !important;
+}
+
+/* Section header (seats/combos) */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.clear-btn {
+  border: none;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.clear-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Seats */
+.seats-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.seat-tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+}
+
+.seats-price {
+  margin-top: 10px;
+  font-weight: 700;
+  text-align: right;
+  color: #111;
+}
+
+/* Combos */
+.combos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.combo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.combo-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.combo-name {
+  font-size: 14px;
+}
+.combo-quantity {
+  color: #333 !important;
+}
+
+.combo-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.combo-price {
+  font-weight: 700;
+  color: #111;
+}
+
+.combo-controls {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.remove-combo-btn,
+.remove-all-combo-btn {
+  border: none;
+  background: #fee2e2;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+}
+.remove-all-combo-btn {
+  background: #fecaca;
+}
+.remove-combo-btn:hover {
+  background: #fecaca;
+}
+.remove-all-combo-btn:hover {
+  background: #fca5a5;
+}
+
+/* Total */
+.total-breakdown {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.total-line.final {
+  border-top: 1px dashed #eee;
+  padding-top: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+}
+
+/* ====== Step 3 layout ====== */
+.confirm-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.confirm-left,
+.confirm-right {
+  flex: 1 1 0;
+}
+
+.confirm-left {
+  max-width: 55%;
+}
+.confirm-right {
+  max-width: 40%;
+}
+
+/* ====== Footer buttons (Đẹp & đều hơn) ====== */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Button base */
+.showtime-info .btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Button variants */
+.showtime-info .btn-outline {
+  background: #f8f9fa;
+  color: #111;
+  border: 2px solid #e9ecef;
+}
+
+.showtime-info .btn-outline:hover:not(:disabled) {
+  background: #e9ecef;
+  color: #111;
+  border-color: #111;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(17,17,17,0.2);
+}
+
+.showtime-info .btn-primary {
+  background: linear-gradient(135deg, #111 0%, #333 100%);
+  color: #fff;
+  border: 2px solid #111;
+}
+
+.showtime-info .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #000 0%, #222 100%);
+  border-color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(17,17,17,0.4);
+}
+
+.showtime-info .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .showtime-info .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}

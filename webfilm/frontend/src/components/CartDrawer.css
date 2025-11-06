@@ -1,0 +1,144 @@
+.drawer-wrap{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-start;
+    padding-top: 90px;
+    padding-right: 16px;
+}
+.backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.3)
+}
+.drawer{
+    width:400px;
+    max-width:92vw;
+    max-height:80vh;
+    padding:20px 20px 0;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 8px 32px rgba(0,0,0,.15);
+    position:relative;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+}
+.head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px
+}
+.t{
+    font-weight:700;
+    font-size:18px
+}
+.x{
+    font-size:24px;
+    line-height:1
+}
+.list{
+    display:grid;
+    gap:8px;
+    overflow:auto;
+}
+.empty{
+    font-size:14px;
+    color:#6b7280
+}
+.item{
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    border:1px solid #f1f5f9;
+    border-radius:12px;
+}
+.name{
+    font-weight:600
+}
+.sub{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:2px
+}
+.right{
+    text-align:right
+}
+.price{
+    font-weight:700;
+    color:#000
+}
+.under{ margin-top:6px; }
+.rm{
+    font-size:12px;
+    color:#6b7280
+}
+.rm:hover{ color:#ef4444; }
+.total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px;
+    margin-top:auto;
+    position:sticky;
+    bottom:68px; /* chừa chỗ cho nút */
+    background:linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,1) 60%);
+    backdrop-filter: blur(8px);
+    border-top:1px solid #f1f5f9;
+}
+.bold{
+    font-weight:800;
+    color:#000
+}
+
+/* Close button */
+.x{
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+
+/* Phần combo mini trong item vé */
+.combo-mini{ 
+    list-style: disc;
+    padding-left: 18px;
+    margin: 6px 0 0;
+}
+.combo-mini li{ 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    gap:8px; 
+    font-size:13px;
+}
+.price-mini{ font-weight:600; }
+.rm-mini{ 
+    border:none; 
+    background:transparent; 
+    color:#6b7280; 
+    cursor:pointer; 
+    font-size:18px;
+    line-height:1;
+    padding: 2px 6px;
+}
+.rm-mini:hover{ color:#ef4444; }
+
+/* Khối tạm tính trong item */
+.break{ 
+    margin-top:8px; 
+    padding-top:8px; 
+    border-top:1px dashed #e5e7eb; 
+}
+.line{ 
+    display:flex; 
+    justify-content:space-between; 
+    font-size:13px; 
+    color:#374151; 
+}
+
+/* Nút thanh toán ở đáy */
+.drawer .btn{ width:100%; margin:12px 0 16px; }

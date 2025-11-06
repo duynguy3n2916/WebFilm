@@ -1,0 +1,9 @@
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:rgb(249,250,251);color:#111827;overflow-x:hidden;font-variant-caps:normal}
+img{display:block;max-width:100%}
+button{cursor:pointer;border:none;background:transparent}
+.container{max-width:1400px;margin:0 auto}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px}
+.shadow{box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.line-clamp-1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
