@@ -131,13 +131,8 @@ Cart & Bookings (yêu cầu JWT)
 ## Scripts hữu ích (backend/scripts)
 - `auto-generate-showtimes.js` – tiện ích sinh suất chiếu tự động (xem hướng dẫn trong mã nguồn).
 
-## Build & deploy
-- Frontend build: `npm run build` trong `frontend/` → đầu ra `frontend/build/`
-- Backend có thể chạy bằng `node server.js` hoặc qua process manager (PM2, Docker, v.v.).
 
-## Góp ý & phát triển
-- Theo chuẩn code hiện tại: đặt tên rõ nghĩa, tránh bắt ngoại lệ không xử lý, giữ kiểu dữ liệu an toàn.
-- PR/Issue: mô tả rõ lỗi/tính năng, ảnh hưởng đến API/UI/DB nếu có.
 
----
-Chúc bạn dùng vui vẻ! Nếu cần, có thể bổ sung script SQL tạo bảng mẫu và dữ liệu demo.
+
+
+
